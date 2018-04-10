@@ -14,4 +14,6 @@
 + (void)stylize: (NSDictionary *)json component: (UIView *)el;
 + (void)stylize: (NSDictionary *)json text: (UIView *)el;
 + (void)updateForm:(NSDictionary *)kv;
++(NSString*)convertHtmlPlainText:(NSString*)HTMLString;
+
 @end
