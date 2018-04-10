@@ -280,8 +280,13 @@
         // The text MUST be set AFTER setting the font.
         // Therefore we need to set the text one more time here.
         if([el isKindOfClass:[UILabel class]]){
-            if(json[@"text"]){
-                [el setValue:json[@"text"] forKey:@"text"];
+            if([json[@"text"] length] > 0){
+                if ([json[@"text_type"] isEqualToString:@"html"]){
+                    [el setValue:[self convertHtmlPlainText:json[@"text"]] forKey:@"text"];
+                }
+                else{
+                    [el setValue:json[@"text"] forKey:@"text"];
+                }
             }
         }
     }
@@ -289,4 +294,15 @@
 + (void)updateForm:(NSDictionary *)kv{
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateForm" object:nil userInfo:kv];
 }
+
+
++(NSString*)convertHtmlPlainText:(NSString*)HTMLString{
+    NSData *HTMLData = [HTMLString dataUsingEncoding:NSUTF8StringEncoding];
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithData:HTMLData options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:NULL error:NULL];
+    NSString *plainString = attrString.string;
+    
+    return plainString;
+}
+
+
 @end

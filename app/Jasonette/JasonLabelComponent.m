@@ -15,7 +15,12 @@
         component.numberOfLines = 0;
         if(json[@"text"] && ![json[@"text"] isEqual:[NSNull null]]){
             if([json[@"text"] length] > 0){
-                component.text = json[@"text"];
+                if ([json[@"text_type"] isEqualToString:@"html"]){
+                    component.text = [self convertHtmlPlainText:json[@"text"]];
+                }
+                else{
+                    component.text = json[@"text"];
+                }
             }
         }
     }
